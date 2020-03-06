@@ -1,0 +1,33 @@
+language: python
+sudo: required
+dist: trusty
+group: deprecated-2017Q2
+cache:
+  - apt
+  - directories:
+    - "$HOME/.cache/pip"
+    - "$HOME/.pyenv"
+python:
+  - 2.7
+  - 3.4
+virtualenv:
+  system_site_packages: true
+script:
+  - "xvfb-run -a ./.travis/run.sh"
+addons:
+  apt:
+    packages:
+     - ibus
+     - python-gi
+     - python3-gi
+     - python-gobject
+     - gir1.2-glib-2.0
+     - gir1.2-ibus-1.0
+     - libwnck-3-0
+     - gir1.2-wnck-3.0
+     - libgtk-3-0
+     - gir1.2-gtk-3.0
+     - xvfb
+install:
+  - pip install pep8
+  - pip install pylint
