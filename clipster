@@ -360,14 +360,12 @@ class Daemon(object):
 
         selection = getattr(self, board.lower())
         selection.set_text(data, -1)
-        with open(environ['CLIPBOARD_FILE'],mode="wt") as f:
-            f.write(data)
-        #if "\n" in data:
-        #    paste_mode="V"
-        #else:
-        #    paste_mode="b"
-        #with open(environ['CLIPBOARD_META_FILE'],mode="wt") as f:
-        #    f.write(paste_mode)
+        with open(environ['CLIPBOARD_FILE'],mode="rb") as f:
+            fcontent=f.read()
+        bdata=data.encode()
+        if fcontent!=bdata:
+            with open(environ["CLIPBOARD_FILE"],mode="wt") as f:
+                f.write(data)
         if not data:
             selection.clear()
 
