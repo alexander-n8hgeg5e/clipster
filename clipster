@@ -12,6 +12,7 @@ import socket
 import os
 import errno
 import sys
+from pylib.xutils.env import get_uniq_xdisplay_string
 import logging
 import tempfile
 import re
@@ -765,16 +766,17 @@ def parse_config(args, data_dir):
     """Configuration derived from defaults & file."""
 
     # Set some config defaults
+    x_display = get_uniq_xdisplay_string()
     config_defaults = {"data_dir": data_dir,  # clipster 'root' dir (see history/socket/pid file config)
                        "default_selection": "PRIMARY",  # PRIMARY or CLIPBOARD
                        "active_selections": "PRIMARY,CLIPBOARD",  # Comma-separated list of selections to monitor/save
                        "sync_selections": "no",  # Synchronise contents of both clipboards
-                       "history_file": "%(data_dir)s/history",
+                       "history_file": "%(data_dir)s/history_" + x_display,
                        "history_size": "200",  # Number of items to be saved in the history file (for each selection)
                        "history_update_interval": "60",  # Flush history to disk every N seconds, if changed (0 disables timeout)
                        "write_on_change": "no",  # Always write history file immediately (overrides history_update_interval)
-                       "socket_file": "%(data_dir)s/clipster_sock_" + socket.gethostname() ,
-                       "pid_file": "%(data_dir)s/clipster.pid",
+                       "socket_file": "%(data_dir)s/clipster_sock_" + x_display,
+                       "pid_file": "%(data_dir)s/clipster_" + x_display + ".pid",
                        "max_input": "50000",  # max length of selection input
                        "row_height": "3",  # num rows to show in widget
                        "duplicates": "no",  # allow duplicates, or instead move the original entry to top
