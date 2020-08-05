@@ -785,7 +785,7 @@ def parse_config(args, data_dir):
                        "pattern_as_selection": "no",  # Extracted pattern should replace current selection.
                        "filter_classes": ""}  # Comma-separated list of WM_CLASS to identify apps from which to ignore owner-change events
 
-    config = configparser.SafeConfigParser(config_defaults)
+    config = configparser.ConfigParser(config_defaults)
     config.add_section('clipster')
 
     # Try to read config file (either passed in, or default value)
