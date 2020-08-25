@@ -516,7 +516,7 @@ class Daemon(object):
 
         conn, _ = sock.accept()
         self.client_msgs[conn.fileno()] = []
-        GObject.io_add_watch(conn, GObject.IO_IN,
+        GLib.io_add_watch(conn, GLib.IO_IN,
                              self.socket_recv)
         logging.debug("Client connection received.")
         return True
@@ -698,7 +698,7 @@ class Daemon(object):
         self.c_id = self.clipboard.connect('owner-change',
                                            self.owner_change)
         # Handle socket connections
-        GObject.io_add_watch(self.sock, GObject.IO_IN,
+        GLib.io_add_watch(self.sock, GLib.IO_IN,
                              self.socket_accept)
         # Handle unix signals
         GLib.unix_signal_add(GLib.PRIORITY_HIGH, signal.SIGINT, self.exit)
@@ -710,7 +710,7 @@ class Daemon(object):
         history_timeout = self.config.getint('clipster', 'history_update_interval')
         if history_timeout and not self.config.getboolean('clipster', 'write_on_change'):
             logging.debug("Writing history file every %s seconds", history_timeout)
-            GObject.timeout_add_seconds(history_timeout,
+            GLib.timeout_add_seconds(history_timeout,
                                         self.write_history_file)
 
         Gtk.main()
