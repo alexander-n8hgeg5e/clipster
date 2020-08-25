@@ -768,7 +768,7 @@ def parse_config(args, data_dir):
     # Set some config defaults
     x_display = get_uniq_xdisplay_string()
     config_defaults = {"data_dir": data_dir,  # clipster 'root' dir (see history/socket/pid file config)
-                       "default_selection": "PRIMARY",  # PRIMARY or CLIPBOARD
+                       "default_selection": "CLIPBOARD",  # PRIMARY or CLIPBOARD
                        "active_selections": "PRIMARY,CLIPBOARD",  # Comma-separated list of selections to monitor/save
                        "sync_selections": "no",  # Synchronise contents of both clipboards
                        "history_file": "%(data_dir)s/history_" + x_display,
