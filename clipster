@@ -211,7 +211,7 @@ class Daemon(object):
 
         # Handle select with return or mouse
         if event.keyval == Gdk.KEY_Return:
-            self.activate_handler(event, board, tree_select)
+            self.activate_handler(event, ["PRIMARY","CLIPBOARD"], tree_select)
         # close/hide select window by key q
         if event.keyval == Gdk.KEY_q:
             self.window.hide()
@@ -261,7 +261,12 @@ class Daemon(object):
             # Select full text from row
             data = model[model.get_iter(tree)][1]
             self.update_board(board, data)
-            self.update_history(board, data)
+            if type(board) is str:
+                boards=[board]
+            else:
+                boards=board
+            for board in boards:
+                self.update_history(board, data)
         model.clear()
         self.window.hide()
 
@@ -358,17 +363,22 @@ class Daemon(object):
 
     def update_board(self, board, data=""):
         """Update a clipboard. Will trigger an owner-change event."""
+        if type(board) is str:
+            boards=[board]
+        else:
+            boards=board
+        for board in boards:
+            selection = getattr(self, board.lower())
+            selection.set_text(data, -1)
+            if not data:
+                selection.clear()
 
-        selection = getattr(self, board.lower())
-        selection.set_text(data, -1)
         with open(environ['CLIPBOARD_FILE'],mode="rb") as f:
             fcontent=f.read()
         bdata=data.encode()
         if fcontent!=bdata:
             with open(environ["CLIPBOARD_FILE"],mode="wt") as f:
                 f.write(data)
-        if not data:
-            selection.clear()
 
     def remove_history(self, board, text):
         """If text exists in the history, remove it."""
