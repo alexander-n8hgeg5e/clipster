@@ -221,6 +221,13 @@ class Daemon(object):
         # Hide window if ESC is pressed
         if event.keyval == Gdk.KEY_Escape:
             self.window.hide()
+        # toggle (primary <-> clipboard)
+        if event.keyval == Gdk.KEY_x:
+            self.window.hide()
+            if board == "PRIMARY":
+                self.selection_widget("CLIPBOARD")
+            else:
+                self.selection_widget("PRIMARY")
 
     def delete_handler(self, event, board, tree_select):
         """Delete selected history entries."""
@@ -282,7 +289,7 @@ class Daemon(object):
         tree_select = tree.get_selection()
         tree_select.set_mode(Gtk.SelectionMode.MULTIPLE)
         renderer = Gtk.CellRendererText()
-        column = Gtk.TreeViewColumn("{0} clipboard:\n <ret> to activate, <del> to remove, <esc> to exit.".format(board),
+        column = Gtk.TreeViewColumn("{0} clipboard:\n <ret> to activate, <del> to remove, <x> to change board, <esc> to exit.".format(board),
                                     renderer, markup=0)
 
         # Add rows to the model
